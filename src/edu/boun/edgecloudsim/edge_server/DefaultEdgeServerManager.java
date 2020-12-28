@@ -208,7 +208,7 @@ public class DefaultEdgeServerManager extends EdgeServerManager{
 					new VmSchedulerSpaceShared(peList)
 				);
 			
-			host.setPlace(new Location(placeTypeIndex, wlan_id, x_pos, y_pos));
+			host.setPlace(new Location(placeTypeIndex, wlan_id));
 			hostList.add(host);
 			hostIdCounter++;
 		}
