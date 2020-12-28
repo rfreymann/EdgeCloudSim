@@ -109,7 +109,7 @@ public class SampleMobileDeviceManager extends MobileDeviceManager {
 			double WanDelay = networkModel.getDownloadDelay(SimSettings.CLOUD_DATACENTER_ID, task.getMobileDeviceId(), task);
 			if(WanDelay > 0)
 			{
-				Location currentLocation = SimManager.getInstance().getMobilityModel().getLocation(task.getMobileDeviceId(),CloudSim.clock()+WanDelay);
+				Location currentLocation = SimManager.getInstance().getMobilityModel().getLocation(task.getMobileDeviceId());
 				if(task.getSubmittedLocation().getServingWlanId() == currentLocation.getServingWlanId())
 				{
 					networkModel.downloadStarted(task.getSubmittedLocation(), SimSettings.CLOUD_DATACENTER_ID);
@@ -149,7 +149,7 @@ public class SampleMobileDeviceManager extends MobileDeviceManager {
 			
 			if(delay > 0)
 			{
-				Location currentLocation = SimManager.getInstance().getMobilityModel().getLocation(task.getMobileDeviceId(),CloudSim.clock()+delay);
+				Location currentLocation = SimManager.getInstance().getMobilityModel().getLocation(task.getMobileDeviceId());
 				if(task.getSubmittedLocation().getServingWlanId() == currentLocation.getServingWlanId())
 				{
 					networkModel.downloadStarted(currentLocation, nextDeviceForNetworkModel);
@@ -241,7 +241,7 @@ public class SampleMobileDeviceManager extends MobileDeviceManager {
 				
 				if(delay > 0)
 				{
-					Location currentLocation = SimManager.getInstance().getMobilityModel().getLocation(task.getMobileDeviceId(),CloudSim.clock()+delay);
+					Location currentLocation = SimManager.getInstance().getMobilityModel().getLocation(task.getMobileDeviceId());
 					if(task.getSubmittedLocation().getServingWlanId() == currentLocation.getServingWlanId())
 					{
 						networkModel.downloadStarted(currentLocation, SimSettings.GENERIC_EDGE_DEVICE_ID);
@@ -292,7 +292,7 @@ public class SampleMobileDeviceManager extends MobileDeviceManager {
 		Task task = createTask(edgeTask);
 		
 		Location currentLocation = SimManager.getInstance().getMobilityModel().
-				getLocation(task.getMobileDeviceId(), CloudSim.clock());
+				getLocation(task.getMobileDeviceId());
 		
 		//set location of the mobile device which generates this task
 		task.setSubmittedLocation(currentLocation);
