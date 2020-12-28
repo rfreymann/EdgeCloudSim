@@ -163,7 +163,7 @@ public class SampleNetworkModel extends NetworkModel {
 	public double getDownloadDelay(int sourceDeviceId, int destDeviceId, Task task) {
 		double delay = 0;
 		
-		Location accessPointLocation = SimManager.getInstance().getMobilityModel().getLocation(destDeviceId,CloudSim.clock());
+		Location accessPointLocation = SimManager.getInstance().getMobilityModel().getLocation(destDeviceId);
 		
 		//edge device (wifi access point) to mobile device
 		if (sourceDeviceId == SimSettings.GENERIC_EDGE_DEVICE_ID) {
