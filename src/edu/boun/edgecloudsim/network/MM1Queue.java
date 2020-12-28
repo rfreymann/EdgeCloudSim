@@ -68,7 +68,7 @@ public class MM1Queue extends NetworkModel {
 	@Override
 	public double getUploadDelay(int sourceDeviceId, int destDeviceId, Task task) {
 		double delay = 0;
-		Location accessPointLocation = SimManager.getInstance().getMobilityModel().getLocation(sourceDeviceId,CloudSim.clock());
+		Location accessPointLocation = SimManager.getInstance().getMobilityModel().getLocation(sourceDeviceId);
 
 		//mobile device to cloud server
 		if(destDeviceId == SimSettings.CLOUD_DATACENTER_ID){
@@ -102,7 +102,7 @@ public class MM1Queue extends NetworkModel {
 		}
 
 		double delay = 0;
-		Location accessPointLocation = SimManager.getInstance().getMobilityModel().getLocation(destDeviceId,CloudSim.clock());
+		Location accessPointLocation = SimManager.getInstance().getMobilityModel().getLocation(destDeviceId);
 		
 		//cloud server to mobile device
 		if(sourceDeviceId == SimSettings.CLOUD_DATACENTER_ID){
@@ -135,19 +135,7 @@ public class MM1Queue extends NetworkModel {
 	}
 	
 	private int getDeviceCount(Location deviceLocation, double time){
-		int deviceCount = 0;
-		
-		for(int i=0; i<numberOfMobileDevices; i++) {
-			Location location = SimManager.getInstance().getMobilityModel().getLocation(i,time);
-			if(location.equals(deviceLocation))
-				deviceCount++;
-		}
-		
-		//record max number of client just for debugging
-		if(maxNumOfClientsInPlace<deviceCount)
-			maxNumOfClientsInPlace = deviceCount;
-		
-		return deviceCount;
+		return SimManager.getInstance().getMobilityModel().getDeviceCount(deviceLocation.getServingWlanId());
 	}
 	
 	private double calculateMM1(double propogationDelay, int bandwidth /*Kbps*/, double PoissonMean, double avgTaskSize /*KB*/, int deviceCount){

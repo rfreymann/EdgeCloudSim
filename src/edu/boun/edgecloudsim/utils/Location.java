@@ -14,11 +14,9 @@ public class Location {
 	private int yPos;
 	private int servingWlanId;
 	private int placeTypeIndex;
-	public Location(int _placeTypeIndex, int _servingWlanId, int _xPos, int _yPos){
+	public Location(int _placeTypeIndex, int _servingWlanId){
 		servingWlanId = _servingWlanId;
 		placeTypeIndex=_placeTypeIndex;
-		xPos = _xPos;
-		yPos = _yPos;
 	}
 	
 	@Override
@@ -29,7 +27,7 @@ public class Location {
 	    if (other == this) return true;
 	    
 	    Location otherLocation = (Location)other;
-	    if(this.xPos == otherLocation.xPos && this.yPos == otherLocation.yPos)
+	    if(servingWlanId == otherLocation.getServingWlanId() && placeTypeIndex == otherLocation.getPlaceTypeIndex())
 	    	result = true;
 
 	    return result;

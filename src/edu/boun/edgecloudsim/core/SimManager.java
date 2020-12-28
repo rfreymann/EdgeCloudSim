@@ -39,6 +39,7 @@ public class SimManager extends SimEntity {
 	private static final int GET_LOAD_LOG = 2;
 	private static final int PRINT_PROGRESS = 3;
 	private static final int STOP_SIMULATION = 4;
+	private static final int MOVE_DEVICE = 5;
 	
 	private String simScenario;
 	private String orchestratorPolicy;
@@ -256,6 +257,9 @@ public class SimManager extends SimEntity {
 					System.exit(0);
 				}
 				break;
+			case MOVE_DEVICE:
+				mobilityModel.getDeviceCount(ev.getDestination());
+				break;
 			default:
 				Log.printLine(getName() + ": unknown event type");
 				break;
@@ -268,5 +272,9 @@ public class SimManager extends SimEntity {
 		edgeServerManager.terminateDatacenters();
 		cloudServerManager.terminateDatacenters();
 		mobileServerManager.terminateDatacenters();
+	}
+
+	public static int getMoveDevice() {
+		return MOVE_DEVICE;
 	}
 }
