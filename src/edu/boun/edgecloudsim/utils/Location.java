@@ -21,8 +21,8 @@ public class Location {
 		yPos = _yPos;
 	}
 	
-	@Override
-	public boolean equals(Object other){
+	//@Override
+	public boolean equals(Location other){
 		boolean result = false;
 	    if (other == null) return false;
 	    if (!(other instanceof Location))return false;

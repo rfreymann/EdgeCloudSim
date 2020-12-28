@@ -10,6 +10,9 @@
 
 package edu.boun.edgecloudsim.network;
 
+import java.io.FileWriter;   // Import the FileWriter class
+import java.io.IOException;  // Import the IOException class to handle errors
+
 import org.cloudbus.cloudsim.core.CloudSim;
 
 import edu.boun.edgecloudsim.core.SimManager;
@@ -17,6 +20,10 @@ import edu.boun.edgecloudsim.core.SimSettings;
 import edu.boun.edgecloudsim.edge_client.Task;
 import edu.boun.edgecloudsim.edge_server.EdgeHost;
 import edu.boun.edgecloudsim.utils.Location;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 public class MM1Queue extends NetworkModel {
 	private double WlanPoissonMean; //seconds
@@ -141,6 +148,21 @@ public class MM1Queue extends NetworkModel {
 			Location location = SimManager.getInstance().getMobilityModel().getLocation(i,time);
 			if(location.equals(deviceLocation))
 				deviceCount++;
+		}
+
+		try {
+			FileWriter myWriter = new FileWriter("sim_results/filename.txt", true);
+			Document doc = SimSettings.getInstance().getEdgeDevicesDocument();
+			NodeList datacenterList = doc.getElementsByTagName("datacenter");
+			Node datacenterNode = datacenterList.item(deviceLocation.getServingWlanId());
+			Element datacenterElement = (Element) datacenterNode;
+			Element location = (Element)datacenterElement.getElementsByTagName("location").item(0);
+			Integer attractiveness = Integer.parseInt(location.getElementsByTagName("attractiveness").item(0).getTextContent());
+			double[] attr = SimSettings.getInstance().getMobilityLookUpTable();
+			myWriter.write(deviceCount + ":" + attr[attractiveness] + ":" + numberOfMobileDevices + "\n");
+			myWriter.close();
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 		
 		//record max number of client just for debugging
