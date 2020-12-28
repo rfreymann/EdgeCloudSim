@@ -12,14 +12,11 @@
 
 package edu.boun.edgecloudsim.mobility;
 
-import java.util.ArrayList;
-import java.util.TreeMap;
-import java.util.Map.Entry;
 
 import edu.boun.edgecloudsim.core.SimManager;
-import edu.boun.edgecloudsim.edge_client.MobileDeviceManager;
 import org.apache.commons.math3.distribution.ExponentialDistribution;
-import org.cloudbus.cloudsim.core.CloudSim;
+import org.apache.commons.math3.random.RandomGenerator;
+import org.apache.commons.math3.random.Well19937c;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -29,6 +26,8 @@ import edu.boun.edgecloudsim.core.SimSettings;
 import edu.boun.edgecloudsim.utils.Location;
 import edu.boun.edgecloudsim.utils.SimLogger;
 import edu.boun.edgecloudsim.utils.SimUtils;
+
+import java.util.Random;
 
 public class NomadicMobility extends MobilityModel {
 	private Location[] deviceLocations;
@@ -53,14 +52,15 @@ public class NomadicMobility extends MobilityModel {
 		//create random number generator for each place
 		Document doc = SimSettings.getInstance().getEdgeDevicesDocument();
 		NodeList datacenterList = doc.getElementsByTagName("datacenter");
+		RandomGenerator wll = new Well19937c(1337);
 		for (int i = 0; i < datacenterList.getLength(); i++) {
 			Node datacenterNode = datacenterList.item(i);
 			Element datacenterElement = (Element) datacenterNode;
 			Element location = (Element)datacenterElement.getElementsByTagName("location").item(0);
 			String attractiveness = location.getElementsByTagName("attractiveness").item(0).getTextContent();
 			int placeTypeIndex = Integer.parseInt(attractiveness);
-			
-			expRngList[i] = new ExponentialDistribution(SimSettings.getInstance().getMobilityLookUpTable()[placeTypeIndex]);
+
+			expRngList[i] = new ExponentialDistribution(wll, SimSettings.getInstance().getMobilityLookUpTable()[placeTypeIndex]);
 		}
 		
 		//initialize locations of each device and start scheduling of movement events
