@@ -146,7 +146,7 @@ public class MM1Queue extends NetworkModel {
 		int deviceCount = SimManager.getInstance().getMobilityModel().getDeviceCount(deviceLocation.getServingWlanId());
 
 		// to examine movement between locations
-		try {
+		/*try {
 			FileWriter myWriter = new FileWriter("sim_results/otherfilename.txt", true);
 			Document doc = SimSettings.getInstance().getEdgeDevicesDocument();
 			NodeList datacenterList = doc.getElementsByTagName("datacenter");
@@ -160,7 +160,7 @@ public class MM1Queue extends NetworkModel {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
+*/
 		return deviceCount;
 
 		//return SimManager.getInstance().getMobilityModel().getDeviceCount(deviceLocation.getServingWlanId());
