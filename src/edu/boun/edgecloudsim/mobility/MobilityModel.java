@@ -35,4 +35,6 @@ public abstract class MobilityModel {
 	public abstract Location getLocation(int deviceId);
 
 	public abstract int getDeviceCount(int datacenterId);
+
+	public abstract void move(int deviceId);
 }

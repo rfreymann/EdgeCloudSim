@@ -58,7 +58,7 @@ public class SimManager extends SimEntity {
 	
 	public SimManager(ScenarioFactory _scenarioFactory, int _numOfMobileDevice, String _simScenario, String _orchestratorPolicy) throws Exception {
 		super("SimManager");
-		instance = this;
+
 		simScenario = _simScenario;
 		scenarioFactory = _scenarioFactory;
 		numOfMobileDevice = _numOfMobileDevice;
@@ -69,10 +69,7 @@ public class SimManager extends SimEntity {
 		loadGeneratorModel.initializeModel();
 		SimLogger.printLine("Done, ");
 		
-		SimLogger.print("Creating device locations...");
-		mobilityModel = scenarioFactory.getMobilityModel();
-		mobilityModel.initialize();
-		SimLogger.printLine("Done.");
+
 
 		//Generate network model
 		networkModel = scenarioFactory.getNetworkModel();
@@ -97,6 +94,10 @@ public class SimManager extends SimEntity {
 		//Create Client Manager
 		mobileDeviceManager = scenarioFactory.getMobileDeviceManager();
 		mobileDeviceManager.initialize();
+
+		instance = this;
+
+
 		
 
 	}
@@ -110,7 +111,7 @@ public class SimManager extends SimEntity {
 	 */
 	public void startSimulation() throws Exception{
 		//Starts the simulation
-		SimLogger.print(super.getName()+" is starting...");
+		SimLogger.print(super.getName() + " is starting...");
 		
 		//Start Edge Datacenters & Generate VMs
 		edgeServerManager.startDatacenters();
@@ -195,6 +196,11 @@ public class SimManager extends SimEntity {
 			if(mobileServerManager.getVmList(i) != null)
 				mobileDeviceManager.submitVmList(mobileServerManager.getVmList(i));
 		}
+
+		SimLogger.print("Creating device locations...");
+		mobilityModel = scenarioFactory.getMobilityModel();
+		mobilityModel.initialize();
+		SimLogger.printLine("Done.");
 		
 		//Creation of tasks are scheduled here!
 		for(int i=0; i< loadGeneratorModel.getTaskList().size(); i++)
@@ -259,7 +265,7 @@ public class SimManager extends SimEntity {
 				}
 				break;
 			case MOVE_DEVICE:
-				mobilityModel.getDeviceCount(ev.getDestination());
+				mobilityModel.move((int) ev.getData());
 				break;
 			default:
 				Log.printLine(getName() + ": unknown event type");

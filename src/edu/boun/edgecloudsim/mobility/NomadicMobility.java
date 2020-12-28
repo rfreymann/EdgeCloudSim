@@ -65,7 +65,6 @@ public class NomadicMobility extends MobilityModel {
 		
 		//initialize locations of each device and start scheduling of movement events
 		for(int i=0; i<numberOfMobileDevices; i++) {
-			
 			int randDatacenterId = SimUtils.getRandomNumber(0, SimSettings.getInstance().getNumOfEdgeDatacenters()-1);
 			Node datacenterNode = datacenterList.item(randDatacenterId);
 			Element datacenterElement = (Element) datacenterNode;
@@ -77,7 +76,8 @@ public class NomadicMobility extends MobilityModel {
 			++datacenterDeviceCount[wlan_id];
 			deviceLocations[i] = new Location(placeTypeIndex, wlan_id);
 			double waitingTime = expRngList[deviceLocations[i].getServingWlanId()].sample();
-			SimManager.getInstance().schedule(i,waitingTime + CloudSim.clock(),SimManager.getMoveDevice());
+			SimManager x = SimManager.getInstance();
+			x.schedule(x.getId(),waitingTime,SimManager.getMoveDevice(), i);
 
 		}
 		
@@ -85,12 +85,10 @@ public class NomadicMobility extends MobilityModel {
 
 	}
 
-
+	@Override
 	public void move(int deviceId){
-
 		boolean placeFound = false;
 		int currentLocationId = deviceLocations[deviceId].getServingWlanId();
-		double waitingTime = expRngList[currentLocationId].sample();
 		Document doc = SimSettings.getInstance().getEdgeDevicesDocument();
 		NodeList datacenterList = doc.getElementsByTagName("datacenter");
 
@@ -108,7 +106,9 @@ public class NomadicMobility extends MobilityModel {
 				--datacenterDeviceCount[currentLocationId];
 				++datacenterDeviceCount[wlan_id];
 				deviceLocations[deviceId] = new Location(placeTypeIndex, wlan_id);
-				SimManager.getInstance().schedule(deviceId,waitingTime+ CloudSim.clock(),SimManager.getMoveDevice());
+				double waitingTime = expRngList[wlan_id].sample();
+				SimManager x = SimManager.getInstance();
+				x.schedule(x.getId(),waitingTime,SimManager.getMoveDevice(), deviceId);
 			}
 		}
 		if(!placeFound){
