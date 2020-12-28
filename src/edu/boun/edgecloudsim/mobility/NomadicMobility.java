@@ -74,10 +74,10 @@ public class NomadicMobility extends MobilityModel {
 			int placeTypeIndex = Integer.parseInt(attractiveness);
 			int wlan_id = Integer.parseInt(location.getElementsByTagName("wlan_id").item(0).getTextContent());
 
-			++datacenterDeviceCount[i];
+			++datacenterDeviceCount[wlan_id];
 			deviceLocations[i] = new Location(placeTypeIndex, wlan_id);
 			double waitingTime = expRngList[deviceLocations[i].getServingWlanId()].sample();
-			SimManager.getInstance().schedule(i,waitingTime+ CloudSim.clock(),SimManager.getMoveDevice());
+			SimManager.getInstance().schedule(i,waitingTime + CloudSim.clock(),SimManager.getMoveDevice());
 
 		}
 		

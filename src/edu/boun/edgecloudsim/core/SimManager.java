@@ -58,6 +58,7 @@ public class SimManager extends SimEntity {
 	
 	public SimManager(ScenarioFactory _scenarioFactory, int _numOfMobileDevice, String _simScenario, String _orchestratorPolicy) throws Exception {
 		super("SimManager");
+		instance = this;
 		simScenario = _simScenario;
 		scenarioFactory = _scenarioFactory;
 		numOfMobileDevice = _numOfMobileDevice;
@@ -97,7 +98,7 @@ public class SimManager extends SimEntity {
 		mobileDeviceManager = scenarioFactory.getMobileDeviceManager();
 		mobileDeviceManager.initialize();
 		
-		instance = this;
+
 	}
 	
 	public static SimManager getInstance(){
