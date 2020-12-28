@@ -226,7 +226,7 @@ public class FuzzyExperimentalNetworkModel extends NetworkModel {
 			return delay = getManUploadDelay();
 		}
 		
-		Location accessPointLocation = SimManager.getInstance().getMobilityModel().getLocation(sourceDeviceId,CloudSim.clock());
+		Location accessPointLocation = SimManager.getInstance().getMobilityModel().getLocation(sourceDeviceId);
 
 		//mobile device to cloud server
 		if(destDeviceId == SimSettings.CLOUD_DATACENTER_ID){
@@ -252,7 +252,7 @@ public class FuzzyExperimentalNetworkModel extends NetworkModel {
 			return delay = getManDownloadDelay();
 		}
 		
-		Location accessPointLocation = SimManager.getInstance().getMobilityModel().getLocation(destDeviceId,CloudSim.clock());
+		Location accessPointLocation = SimManager.getInstance().getMobilityModel().getLocation(destDeviceId);
 		
 		//cloud server to mobile device
 		if(sourceDeviceId == SimSettings.CLOUD_DATACENTER_ID){

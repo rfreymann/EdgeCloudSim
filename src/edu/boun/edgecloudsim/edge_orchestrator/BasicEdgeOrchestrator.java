@@ -94,7 +94,7 @@ public class BasicEdgeOrchestrator extends EdgeOrchestrator {
 	public EdgeVM selectVmOnHost(Task task){
 		EdgeVM selectedVM = null;
 		
-		Location deviceLocation = SimManager.getInstance().getMobilityModel().getLocation(task.getMobileDeviceId(), CloudSim.clock());
+		Location deviceLocation = SimManager.getInstance().getMobilityModel().getLocation(task.getMobileDeviceId());
 		//in our scenasrio, serving wlan ID is equal to the host id
 		//because there is only one host in one place
 		int relatedHostId=deviceLocation.getServingWlanId();

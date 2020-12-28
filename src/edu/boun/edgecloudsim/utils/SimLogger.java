@@ -435,7 +435,7 @@ public class SimLogger {
 
 				for (int i = 0; i < SimManager.getInstance().getNumOfMobileDevice(); i++) {
 
-					Location loc = SimManager.getInstance().getMobilityModel().getLocation(i, time);
+					Location loc = SimManager.getInstance().getMobilityModel().getLocation(i);
 					int placeTypeIndex = loc.getPlaceTypeIndex();
 					locationInfo[placeTypeIndex]++;
 				}

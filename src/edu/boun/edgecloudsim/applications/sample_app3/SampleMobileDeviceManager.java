@@ -94,7 +94,7 @@ public class SampleMobileDeviceManager extends MobileDeviceManager {
 			
 			if(delay > 0)
 			{
-				Location currentLocation = SimManager.getInstance().getMobilityModel().getLocation(task.getMobileDeviceId(),CloudSim.clock()+delay);
+				Location currentLocation = SimManager.getInstance().getMobilityModel().getLocation(task.getMobileDeviceId());
 				if(task.getSubmittedLocation().getServingWlanId() == currentLocation.getServingWlanId())
 				{
 					networkModel.downloadStarted(task.getSubmittedLocation(), SimSettings.GENERIC_EDGE_DEVICE_ID);
@@ -185,7 +185,7 @@ public class SampleMobileDeviceManager extends MobileDeviceManager {
 		Task task = createTask(edgeTask);
 		
 		Location currentLocation = SimManager.getInstance().getMobilityModel().
-				getLocation(task.getMobileDeviceId(), CloudSim.clock());
+				getLocation(task.getMobileDeviceId());
 		
 		//set location of the mobile device which generates this task
 		task.setSubmittedLocation(currentLocation);
