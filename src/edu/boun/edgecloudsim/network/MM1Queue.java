@@ -150,7 +150,7 @@ public class MM1Queue extends NetworkModel {
 				deviceCount++;
 		}
 
-		try {
+		/*try {
 			FileWriter myWriter = new FileWriter("sim_results/filename.txt", true);
 			Document doc = SimSettings.getInstance().getEdgeDevicesDocument();
 			NodeList datacenterList = doc.getElementsByTagName("datacenter");
@@ -168,7 +168,7 @@ public class MM1Queue extends NetworkModel {
 		//record max number of client just for debugging
 		if(maxNumOfClientsInPlace<deviceCount)
 			maxNumOfClientsInPlace = deviceCount;
-		
+		*/
 		return deviceCount;
 	}
 	
