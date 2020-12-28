@@ -52,7 +52,7 @@ public class NomadicMobility extends MobilityModel {
 		//create random number generator for each place
 		Document doc = SimSettings.getInstance().getEdgeDevicesDocument();
 		NodeList datacenterList = doc.getElementsByTagName("datacenter");
-		RandomGenerator wll = new Well19937c(1337);
+
 		for (int i = 0; i < datacenterList.getLength(); i++) {
 			Node datacenterNode = datacenterList.item(i);
 			Element datacenterElement = (Element) datacenterNode;
@@ -60,7 +60,7 @@ public class NomadicMobility extends MobilityModel {
 			String attractiveness = location.getElementsByTagName("attractiveness").item(0).getTextContent();
 			int placeTypeIndex = Integer.parseInt(attractiveness);
 
-			expRngList[i] = new ExponentialDistribution(wll, SimSettings.getInstance().getMobilityLookUpTable()[placeTypeIndex]);
+			expRngList[i] = new ExponentialDistribution(SimSettings.getInstance().getMobilityLookUpTable()[placeTypeIndex]);
 		}
 		
 		//initialize locations of each device and start scheduling of movement events
