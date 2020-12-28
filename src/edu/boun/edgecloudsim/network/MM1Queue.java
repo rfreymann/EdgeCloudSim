@@ -17,6 +17,13 @@ import edu.boun.edgecloudsim.core.SimSettings;
 import edu.boun.edgecloudsim.edge_client.Task;
 import edu.boun.edgecloudsim.edge_server.EdgeHost;
 import edu.boun.edgecloudsim.utils.Location;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+
+import java.io.FileWriter;
+import java.io.IOException;
 
 public class MM1Queue extends NetworkModel {
 	private double WlanPoissonMean; //seconds
@@ -135,7 +142,28 @@ public class MM1Queue extends NetworkModel {
 	}
 	
 	private int getDeviceCount(Location deviceLocation, double time){
-		return SimManager.getInstance().getMobilityModel().getDeviceCount(deviceLocation.getServingWlanId());
+
+		int deviceCount = SimManager.getInstance().getMobilityModel().getDeviceCount(deviceLocation.getServingWlanId());
+
+		// to examine movement between locations
+		try {
+			FileWriter myWriter = new FileWriter("sim_results/otherfilename.txt", true);
+			Document doc = SimSettings.getInstance().getEdgeDevicesDocument();
+			NodeList datacenterList = doc.getElementsByTagName("datacenter");
+			Node datacenterNode = datacenterList.item(deviceLocation.getServingWlanId());
+			Element datacenterElement = (Element) datacenterNode;
+			Element location = (Element)datacenterElement.getElementsByTagName("location").item(0);
+			Integer attractiveness = Integer.parseInt(location.getElementsByTagName("attractiveness").item(0).getTextContent());
+			double[] attr = SimSettings.getInstance().getMobilityLookUpTable();
+			myWriter.write(deviceCount + ":" + attr[attractiveness] + ":" + numberOfMobileDevices + "\n");
+			myWriter.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		return deviceCount;
+
+		//return SimManager.getInstance().getMobilityModel().getDeviceCount(deviceLocation.getServingWlanId());
 	}
 	
 	private double calculateMM1(double propogationDelay, int bandwidth /*Kbps*/, double PoissonMean, double avgTaskSize /*KB*/, int deviceCount){
