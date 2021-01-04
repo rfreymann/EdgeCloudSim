@@ -72,7 +72,8 @@ public class IdleActiveLoadGenerator extends LoadGeneratorModel{
 			taskTypeOfDevices[i] = randomTaskType;
 			double poissonMean = SimSettings.getInstance().getTaskLookUpTable()[randomTaskType][2];
 			taskRng[i] = new ExponentialDistribution(poissonMean);
-			createTask(i);
+			SimManager sm = SimManager.getInstance();
+			sm.schedule(sm.getId(), SimSettings.CLIENT_ACTIVITY_START_TIME, sm.getGenTasks(), i);
 		}
 	}
 
@@ -85,10 +86,11 @@ public class IdleActiveLoadGenerator extends LoadGeneratorModel{
 		double activePeriodStartTime = SimUtils.getRandomDoubleNumber(
 				CloudSim.clock(),
 				CloudSim.clock() + activePeriod);  //active period starts shortly after the simulation started (e.g. 10 seconds)
-		double virtualTime = activePeriodStartTime + taskRng[deviceId].sample();
+		double delay = taskRng[deviceId].sample();
+		double virtualTime = activePeriodStartTime + delay;
 
 		while(virtualTime < activePeriodStartTime + activePeriod) {
-			sm.schedule(sm.getId(), virtualTime, sm.getCreateTask(), new TaskProperty(deviceId,taskTypeOfDevices[deviceId], virtualTime, expRngList));
+			sm.schedule(sm.getId(), delay, sm.getCreateTask(), new TaskProperty(deviceId,taskTypeOfDevices[deviceId], delay, expRngList));
 
 			double interval = taskRng[deviceId].sample();
 			if(interval <= 0){
@@ -96,6 +98,7 @@ public class IdleActiveLoadGenerator extends LoadGeneratorModel{
 				continue;
 			}
 			//SimLogger.printLine(virtualTime + " -> " + interval + " for device " + i + " time ");
+			delay += interval;
 			virtualTime += interval;
 		}
 		sm.schedule(sm.getId(), activePeriod + idlePeriod, sm.getGenTasks(), deviceId);
