@@ -15,8 +15,6 @@ package edu.boun.edgecloudsim.mobility;
 
 import edu.boun.edgecloudsim.core.SimManager;
 import org.apache.commons.math3.distribution.ExponentialDistribution;
-import org.apache.commons.math3.random.RandomGenerator;
-import org.apache.commons.math3.random.Well19937c;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -26,8 +24,6 @@ import edu.boun.edgecloudsim.core.SimSettings;
 import edu.boun.edgecloudsim.utils.Location;
 import edu.boun.edgecloudsim.utils.SimLogger;
 import edu.boun.edgecloudsim.utils.SimUtils;
-
-import java.util.Random;
 
 public class NomadicMobility extends MobilityModel {
 	private Location[] deviceLocations;

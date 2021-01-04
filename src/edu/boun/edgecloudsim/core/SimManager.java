@@ -40,6 +40,7 @@ public class SimManager extends SimEntity {
 	private static final int PRINT_PROGRESS = 3;
 	private static final int STOP_SIMULATION = 4;
 	private static final int MOVE_DEVICE = 5;
+	private static final int GEN_TASKS = 6;
 	
 	private String simScenario;
 	private String orchestratorPolicy;
@@ -64,10 +65,7 @@ public class SimManager extends SimEntity {
 		numOfMobileDevice = _numOfMobileDevice;
 		orchestratorPolicy = _orchestratorPolicy;
 
-		SimLogger.print("Creating tasks...");
-		loadGeneratorModel = scenarioFactory.getLoadGeneratorModel();
-		loadGeneratorModel.initializeModel();
-		SimLogger.printLine("Done, ");
+
 		
 
 
@@ -201,10 +199,12 @@ public class SimManager extends SimEntity {
 		mobilityModel = scenarioFactory.getMobilityModel();
 		mobilityModel.initialize();
 		SimLogger.printLine("Done.");
-		
-		//Creation of tasks are scheduled here!
-		for(int i=0; i< loadGeneratorModel.getTaskList().size(); i++)
-			schedule(getId(), loadGeneratorModel.getTaskList().get(i).getStartTime(), CREATE_TASK, loadGeneratorModel.getTaskList().get(i));
+
+		SimLogger.print("Creating tasks...");
+		loadGeneratorModel = scenarioFactory.getLoadGeneratorModel();
+		loadGeneratorModel.initializeModel();
+		SimLogger.printLine("Done, ");
+
 		
 		//Periodic event loops starts from here!
 		schedule(getId(), 5, CHECK_ALL_VM);
@@ -267,6 +267,10 @@ public class SimManager extends SimEntity {
 			case MOVE_DEVICE:
 				mobilityModel.move((int) ev.getData());
 				break;
+			case GEN_TASKS:
+				int deviceId = (int) ev.getData();
+				loadGeneratorModel.createTask(deviceId);
+				break;
 			default:
 				Log.printLine(getName() + ": unknown event type");
 				break;
@@ -283,5 +287,13 @@ public class SimManager extends SimEntity {
 
 	public static int getMoveDevice() {
 		return MOVE_DEVICE;
+	}
+
+	public static int getCreateTask() {
+		return CREATE_TASK;
+	}
+
+	public static int getGenTasks() {
+		return GEN_TASKS;
 	}
 }
