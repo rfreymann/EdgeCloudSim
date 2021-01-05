@@ -257,7 +257,8 @@ public class DefaultMobileDeviceManager extends MobileDeviceManager {
 			bindCloudletToVm(task.getCloudletId(),selectedVM.getId());
 			
 			//SimLogger.printLine(CloudSim.clock() + ": Cloudlet#" + task.getCloudletId() + " is submitted to VM#" + task.getVmId());
-			schedule(getVmsToDatacentersMap().get(task.getVmId()), delay, CloudSimTags.CLOUDLET_SUBMIT, task);
+			int id = getVmsToDatacentersMap().get(task.getVmId());
+			schedule(id, delay, CloudSimTags.CLOUDLET_SUBMIT, task);
 
 			SimLogger.getInstance().taskAssigned(task.getCloudletId(),
 					selectedVM.getHost().getDatacenter().getId(),
