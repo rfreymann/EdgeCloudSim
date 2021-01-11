@@ -90,7 +90,7 @@ public class IdleActiveLoadGenerator extends LoadGeneratorModel{
 		double virtualTime = activePeriodStartTime + delay;
 
 		while(virtualTime < activePeriodStartTime + activePeriod) {
-			sm.schedule(sm.getId(), delay, sm.getCreateTask(), new TaskProperty(deviceId,taskTypeOfDevices[deviceId], delay, expRngList));
+			sm.schedule(sm.getId(), delay, sm.getCreateTask(), new TaskProperty(deviceId,taskTypeOfDevices[deviceId], virtualTime, expRngList));
 
 			double interval = taskRng[deviceId].sample();
 			if(interval <= 0){
