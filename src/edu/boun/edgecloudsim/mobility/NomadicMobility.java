@@ -111,10 +111,6 @@ public class NomadicMobility extends MobilityModel {
 				x.schedule(x.getId(),waitingTime,SimManager.getMoveDevice(), deviceId);
 			}
 		}
-		if(!placeFound){
-			SimLogger.printLine("impossible is occured! location cannot be assigned to the device!");
-			System.exit(0);
-		}
 	}
 
 	@Override
