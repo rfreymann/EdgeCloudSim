@@ -85,7 +85,7 @@ public class IdleActiveLoadGenerator extends LoadGeneratorModel{
 		double idlePeriod = SimSettings.getInstance().getTaskLookUpTable()[taskTypeOfDevices[deviceId]][4];
 		double activePeriodStartTime = SimUtils.getRandomDoubleNumber(
 				CloudSim.clock(),
-				CloudSim.clock() + activePeriod);  //active period starts shortly after the simulation started (e.g. 10 seconds)
+				CloudSim.clock() + activePeriod);
 		double delay = taskRng[deviceId].sample();
 		double virtualTime = activePeriodStartTime + delay;
 
