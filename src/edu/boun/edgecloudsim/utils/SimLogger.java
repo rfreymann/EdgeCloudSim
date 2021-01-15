@@ -565,36 +565,36 @@ public class SimLogger {
 		}
 
 		// printout important results
-		printLine(""+(failedTask[numOfAppTypes] + completedTask[numOfAppTypes]));
-		
-		printLine(""
+		printLine(";"+(failedTask[numOfAppTypes] + completedTask[numOfAppTypes]));
+
+		print(""
 				+ failedTask[numOfAppTypes]);
-		
-		printLine(""
+
+		print(""
 				+ completedTask[numOfAppTypes]);
-		
-		printLine(""
+
+		print(""
 				+ uncompletedTask[numOfAppTypes]);
 
-		printLine(""
+		print(""
 				+ failedTaskDueToVmCapacity[numOfAppTypes]);
-		
-		printLine(""
+
+		print(""
 				+ failedTaskDuetoMobility[numOfAppTypes]
 				+ ";" + failedTaskDuetoBw[numOfAppTypes]);
-		
-		printLine(""
-				+ String.format("%.6f", ((double) failedTask[numOfAppTypes] * (double) 100)
-						/ (double) (completedTask[numOfAppTypes] + failedTask[numOfAppTypes])));
 
-		printLine(""
+		print(""
+				+ String.format("%.6f", ((double) failedTask[numOfAppTypes] * (double) 100)
+				/ (double) (completedTask[numOfAppTypes] + failedTask[numOfAppTypes])));
+
+		print(""
 				+ String.format("%.6f", serviceTime[numOfAppTypes] / (double) completedTask[numOfAppTypes]));
 
-		printLine("");
+		print("");
 
-		printLine("");
+		print("");
 
-		printLine("average server utilization Edge/Cloud/Mobile: " 
+		print(""
 				+ String.format("%.6f", totalVmLoadOnEdge / (double) vmLoadList.size()) + ";"
 				+ String.format("%.6f", totalVmLoadOnCloud / (double) vmLoadList.size()) + ";"
 				+ String.format("%.6f", totalVmLoadOnMobile / (double) vmLoadList.size()));
