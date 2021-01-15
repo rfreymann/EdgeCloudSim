@@ -120,7 +120,7 @@ public class FuzzyMainApp {
 					Date ScenarioEndDate = Calendar.getInstance().getTime();
 					now = df.format(ScenarioEndDate);
 					//SimLogger.printLine("Scenario finished at " + now +  ". It took " + SimUtils.getTimeDifference(ScenarioStartDate,ScenarioEndDate));
-					//SimLogger.printLine("----------------------------------------------------------------------");
+					SimLogger.printLine("");
 				}//End of orchestrators loop
 			}//End of scenarios loop
 		}//End of mobile devices loop
