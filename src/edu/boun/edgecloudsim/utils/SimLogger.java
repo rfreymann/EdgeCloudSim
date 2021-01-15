@@ -565,36 +565,32 @@ public class SimLogger {
 		}
 
 		// printout important results
-		printLine(";"+(failedTask[numOfAppTypes] + completedTask[numOfAppTypes]));
+		print(";"+(failedTask[numOfAppTypes] + completedTask[numOfAppTypes]));
 
-		print(""
+		print(";"
 				+ failedTask[numOfAppTypes]);
 
-		print(""
+		print(";"
 				+ completedTask[numOfAppTypes]);
 
-		print(""
+		print(";"
 				+ uncompletedTask[numOfAppTypes]);
 
-		print(""
+		print(";"
 				+ failedTaskDueToVmCapacity[numOfAppTypes]);
 
-		print(""
+		print(";"
 				+ failedTaskDuetoMobility[numOfAppTypes]
 				+ ";" + failedTaskDuetoBw[numOfAppTypes]);
 
-		print(""
+		print(";"
 				+ String.format("%.6f", ((double) failedTask[numOfAppTypes] * (double) 100)
 				/ (double) (completedTask[numOfAppTypes] + failedTask[numOfAppTypes])));
 
-		print(""
+		print(";"
 				+ String.format("%.6f", serviceTime[numOfAppTypes] / (double) completedTask[numOfAppTypes]));
 
-		print("");
-
-		print("");
-
-		print(""
+		print(";"
 				+ String.format("%.6f", totalVmLoadOnEdge / (double) vmLoadList.size()) + ";"
 				+ String.format("%.6f", totalVmLoadOnCloud / (double) vmLoadList.size()) + ";"
 				+ String.format("%.6f", totalVmLoadOnMobile / (double) vmLoadList.size()));
