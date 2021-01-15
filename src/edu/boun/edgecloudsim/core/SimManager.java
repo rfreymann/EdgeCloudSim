@@ -247,17 +247,17 @@ public class SimManager extends SimEntity {
 			case PRINT_PROGRESS:
 				int progress = (int)((CloudSim.clock()*100)/SimSettings.getInstance().getSimulationTime());
 				if(progress % 10 == 0) {
-					SimLogger.printLine(CloudSim.getFuture().size() + ":" + CloudSim.getDeferred().size());
-					SimLogger.print(Integer.toString(progress));
+					//SimLogger.printLine(CloudSim.getFuture().size() + ":" + CloudSim.getDeferred().size());
+					//SimLogger.print(Integer.toString(progress));
 				}
 				else
-					SimLogger.print(".");
+					//SimLogger.print(".");
 				if(CloudSim.clock() < SimSettings.getInstance().getSimulationTime())
-					schedule(getId(), SimSettings.getInstance().getSimulationTime()/100, PRINT_PROGRESS);
+					//schedule(getId(), SimSettings.getInstance().getSimulationTime()/100, PRINT_PROGRESS);
 
 				break;
 			case STOP_SIMULATION:
-				SimLogger.printLine("100");
+				//SimLogger.printLine("100");
 				CloudSim.terminateSimulation();
 				try {
 					SimLogger.getInstance().simStopped();
