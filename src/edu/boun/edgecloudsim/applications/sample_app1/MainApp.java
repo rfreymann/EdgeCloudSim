@@ -70,8 +70,8 @@ public class MainApp {
 		DateFormat df = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 		Date SimulationStartDate = Calendar.getInstance().getTime();
 		String now = df.format(SimulationStartDate);
-		SimLogger.printLine("Simulation started at " + now);
-		SimLogger.printLine("----------------------------------------------------------------------");
+		//SimLogger.printLine("Simulation started at " + now);
+		//SimLogger.printLine("----------------------------------------------------------------------");
 
 		for(int j=SS.getMinNumOfMobileDev(); j<=SS.getMaxNumOfMobileDev(); j+=SS.getMobileDevCounterSize())
 		{
@@ -84,10 +84,11 @@ public class MainApp {
 					Date ScenarioStartDate = Calendar.getInstance().getTime();
 					now = df.format(ScenarioStartDate);
 					
-					SimLogger.printLine("Scenario started at " + now);
-					SimLogger.printLine("Scenario: " + simScenario + " - Policy: " + orchestratorPolicy + " - #iteration: " + iterationNumber);
-					SimLogger.printLine("Duration: " + SS.getSimulationTime()/3600 + " hour(s) - Poisson: " + SS.getTaskLookUpTable()[0][2] + " - #devices: " + j);
+					//SimLogger.printLine("Scenario started at " + now);
+					//SimLogger.printLine("Scenario: " + simScenario + " - Policy: " + orchestratorPolicy + " - #iteration: " + iterationNumber);
+					//SimLogger.printLine("Duration: " + SS.getSimulationTime()/3600 + " hour(s) - Poisson: " + SS.getTaskLookUpTable()[0][2] + " - #devices: " + j);
 					SimLogger.getInstance().simStarted(outputFolder,"SIMRESULT_" + simScenario + "_"  + orchestratorPolicy + "_" + j + "DEVICES");
+					SimLogger.print(iterationNumber+";"+simScenario+";"+orchestratorPolicy+";"+j);
 					
 					try
 					{
@@ -118,8 +119,8 @@ public class MainApp {
 					
 					Date ScenarioEndDate = Calendar.getInstance().getTime();
 					now = df.format(ScenarioEndDate);
-					SimLogger.printLine("Scenario finished at " + now +  ". It took " + SimUtils.getTimeDifference(ScenarioStartDate,ScenarioEndDate));
-					SimLogger.printLine("----------------------------------------------------------------------");
+					//SimLogger.printLine("Scenario finished at " + now +  ". It took " + SimUtils.getTimeDifference(ScenarioStartDate,ScenarioEndDate));
+					SimLogger.printLine("");
 				}//End of orchestrators loop
 			}//End of scenarios loop
 		}//End of mobile devices loop

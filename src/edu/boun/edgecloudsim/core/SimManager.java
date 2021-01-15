@@ -64,10 +64,10 @@ public class SimManager extends SimEntity {
 		numOfMobileDevice = _numOfMobileDevice;
 		orchestratorPolicy = _orchestratorPolicy;
 
-		SimLogger.print("Creating tasks...");
+		//SimLogger.print("Creating tasks...");
 		loadGeneratorModel = scenarioFactory.getLoadGeneratorModel();
 		loadGeneratorModel.initializeModel();
-		SimLogger.printLine("Done, ");
+		//SimLogger.printLine("Done, ");
 		
 
 
@@ -111,7 +111,7 @@ public class SimManager extends SimEntity {
 	 */
 	public void startSimulation() throws Exception{
 		//Starts the simulation
-		SimLogger.print(super.getName() + " is starting...");
+		//SimLogger.print(super.getName() + " is starting...");
 		
 		//Start Edge Datacenters & Generate VMs
 		edgeServerManager.startDatacenters();
@@ -197,10 +197,10 @@ public class SimManager extends SimEntity {
 				mobileDeviceManager.submitVmList(mobileServerManager.getVmList(i));
 		}
 
-		SimLogger.print("Creating device locations...");
+		//SimLogger.print("Creating device locations...");
 		mobilityModel = scenarioFactory.getMobilityModel();
 		mobilityModel.initialize();
-		SimLogger.printLine("Done.");
+		//SimLogger.printLine("Done.");
 		
 		//Creation of tasks are scheduled here!
 		for(int i=0; i< loadGeneratorModel.getTaskList().size(); i++)
@@ -212,7 +212,7 @@ public class SimManager extends SimEntity {
 		schedule(getId(), SimSettings.getInstance().getVmLoadLogInterval(), GET_LOAD_LOG);
 		schedule(getId(), SimSettings.getInstance().getSimulationTime(), STOP_SIMULATION);
 		
-		SimLogger.printLine("Done.");
+		//SimLogger.printLine("Done.");
 	}
 
 	@Override
