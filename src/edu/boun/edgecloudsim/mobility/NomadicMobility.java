@@ -108,10 +108,11 @@ public class NomadicMobility extends MobilityModel {
 				int x_pos = Integer.parseInt(location.getElementsByTagName("x_pos").item(0).getTextContent());
 				int y_pos = Integer.parseInt(location.getElementsByTagName("y_pos").item(0).getTextContent());
 
+
 				--datacenterDeviceCount[currentLocationId];
 				++datacenterDeviceCount[newDatacenterId];
 				deviceLocations[deviceId] = new Location(placeTypeIndex, wlan_id, x_pos, y_pos);
-				double waitingTime = expRngList[currentLocationId].sample();
+				double waitingTime = expRngList[newDatacenterId].sample();
 				SimManager x = SimManager.getInstance();
 				x.schedule(x.getId(),waitingTime,SimManager.getMoveDevice(), deviceId);
 			}
