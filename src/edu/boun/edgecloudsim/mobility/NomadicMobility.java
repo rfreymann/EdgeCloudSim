@@ -72,6 +72,8 @@ public class NomadicMobility extends MobilityModel {
 			String attractiveness = location.getElementsByTagName("attractiveness").item(0).getTextContent();
 			int placeTypeIndex = Integer.parseInt(attractiveness);
 			int wlan_id = Integer.parseInt(location.getElementsByTagName("wlan_id").item(0).getTextContent());
+			int x_pos = Integer.parseInt(location.getElementsByTagName("x_pos").item(0).getTextContent());
+			int y_pos = Integer.parseInt(location.getElementsByTagName("y_pos").item(0).getTextContent());
 
 			++datacenterDeviceCount[wlan_id];
 			deviceLocations[i] = new Location(placeTypeIndex, wlan_id);
@@ -102,6 +104,8 @@ public class NomadicMobility extends MobilityModel {
 				String attractiveness = location.getElementsByTagName("attractiveness").item(0).getTextContent();
 				int placeTypeIndex = Integer.parseInt(attractiveness);
 				int wlan_id = Integer.parseInt(location.getElementsByTagName("wlan_id").item(0).getTextContent());
+				int x_pos = Integer.parseInt(location.getElementsByTagName("x_pos").item(0).getTextContent());
+				int y_pos = Integer.parseInt(location.getElementsByTagName("y_pos").item(0).getTextContent());
 
 				SimLogger.printLine(datacenterDeviceCount[0] + ";" + datacenterDeviceCount[1] + ";" + datacenterDeviceCount[2]);
 				--datacenterDeviceCount[currentLocationId];
