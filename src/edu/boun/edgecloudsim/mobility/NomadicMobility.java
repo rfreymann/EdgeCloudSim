@@ -75,9 +75,9 @@ public class NomadicMobility extends MobilityModel {
 
 			++datacenterDeviceCount[wlan_id];
 			deviceLocations[i] = new Location(placeTypeIndex, wlan_id);
-			double waitingTime = expRngList[deviceLocations[i].getServingWlanId()].sample();
+			//double waitingTime = expRngList[deviceLocations[i].getServingWlanId()].sample();
 			SimManager x = SimManager.getInstance();
-			x.schedule(x.getId(),waitingTime,SimManager.getMoveDevice(), i);
+			x.schedule(x.getId(),SimSettings.CLIENT_ACTIVITY_START_TIME,SimManager.getMoveDevice(), i);
 
 		}
 		
@@ -103,6 +103,7 @@ public class NomadicMobility extends MobilityModel {
 				int placeTypeIndex = Integer.parseInt(attractiveness);
 				int wlan_id = Integer.parseInt(location.getElementsByTagName("wlan_id").item(0).getTextContent());
 
+				SimLogger.printLine(datacenterDeviceCount[0] + ";" + datacenterDeviceCount[1] + ";" + datacenterDeviceCount[2]);
 				--datacenterDeviceCount[currentLocationId];
 				++datacenterDeviceCount[wlan_id];
 				deviceLocations[deviceId] = new Location(placeTypeIndex, wlan_id);
