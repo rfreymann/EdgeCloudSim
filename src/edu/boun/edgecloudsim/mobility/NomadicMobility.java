@@ -27,6 +27,7 @@ import edu.boun.edgecloudsim.utils.Location;
 import edu.boun.edgecloudsim.utils.SimLogger;
 import edu.boun.edgecloudsim.utils.SimUtils;
 
+import java.util.Arrays;
 import java.util.Random;
 
 public class NomadicMobility extends MobilityModel {
@@ -107,7 +108,6 @@ public class NomadicMobility extends MobilityModel {
 				int x_pos = Integer.parseInt(location.getElementsByTagName("x_pos").item(0).getTextContent());
 				int y_pos = Integer.parseInt(location.getElementsByTagName("y_pos").item(0).getTextContent());
 
-				SimLogger.printLine(datacenterDeviceCount[0] + ";" + datacenterDeviceCount[1] + ";" + datacenterDeviceCount[2]);
 				--datacenterDeviceCount[currentLocationId];
 				++datacenterDeviceCount[newDatacenterId];
 				deviceLocations[deviceId] = new Location(placeTypeIndex, wlan_id, x_pos, y_pos);
