@@ -34,6 +34,7 @@ public class NomadicMobility extends MobilityModel {
 	private Location[] deviceLocations;
 	private int[] datacenterDeviceCount;
 	ExponentialDistribution[] expRngList;
+	private int countMoves;
 	
 	public NomadicMobility(int _numberOfMobileDevices, double _simulationTime) {
 		super(_numberOfMobileDevices, _simulationTime);
@@ -47,6 +48,7 @@ public class NomadicMobility extends MobilityModel {
 		for (int i=0; i<datacenterDeviceCount.length;i++){
 			datacenterDeviceCount[i] = 0;
 		}
+		int countMoves = 300;
 		
 		expRngList = new ExponentialDistribution[SimSettings.getInstance().getNumOfEdgeDatacenters()];
 
@@ -90,6 +92,8 @@ public class NomadicMobility extends MobilityModel {
 
 	@Override
 	public void move(int deviceId){
+		countMoves++;
+		SimLogger.printLine(countMoves + "");
 		boolean placeFound = false;
 		int currentLocationId = deviceLocations[deviceId].getServingWlanId();
 		Document doc = SimSettings.getInstance().getEdgeDevicesDocument();
