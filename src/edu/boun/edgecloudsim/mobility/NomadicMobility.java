@@ -112,7 +112,7 @@ public class NomadicMobility extends MobilityModel {
 				--datacenterDeviceCount[currentLocationId];
 				++datacenterDeviceCount[newDatacenterId];
 				deviceLocations[deviceId] = new Location(placeTypeIndex, wlan_id, x_pos, y_pos);
-				double waitingTime = expRngList[newDatacenterId].sample();
+				double waitingTime = expRngList[currentLocationId].sample();
 				SimManager x = SimManager.getInstance();
 				x.schedule(x.getId(),waitingTime,SimManager.getMoveDevice(), deviceId);
 			}
