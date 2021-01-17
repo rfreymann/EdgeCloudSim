@@ -27,7 +27,9 @@ import java.util.stream.IntStream;
 import edu.boun.edgecloudsim.core.SimManager;
 import edu.boun.edgecloudsim.core.SimSettings;
 import edu.boun.edgecloudsim.core.SimSettings.NETWORK_DELAY_TYPES;
+import edu.boun.edgecloudsim.mobility.MobilityModel;
 import edu.boun.edgecloudsim.utils.SimLogger.NETWORK_ERRORS;
+import org.cloudbus.cloudsim.core.CloudSim;
 
 public class SimLogger {
 	public static enum TASK_STATUS {
@@ -148,12 +150,31 @@ public class SimLogger {
 		vmLoadList.add(new VmLoadLogItem(time, loadOnEdge, loadOnCloud, loadOnMobile));
 	}
 
+	public void logLocation(){
+		try {
+			File locationFile = new File(outputFolder, filePrefix + "_LOCATION.log");
+			FileWriter locationFW = new FileWriter(locationFile, true);
+			BufferedWriter locationBW = new BufferedWriter(locationFW);
+
+			int numEdge = SimSettings.getInstance().getNumOfEdgeDatacenters();
+			MobilityModel mobilityModel = SimManager.getInstance().getMobilityModel();
+
+			locationBW.write(CloudSim.clock() + "");
+			for (int i = 0; i < numEdge; i++) {
+				locationBW.write(SimSettings.DELIMITER + mobilityModel.getDeviceCount(i));
+			}
+			locationBW.close();
+		} catch (IOException e){
+			e.printStackTrace();
+		}
+	}
+
 	public void simStopped() throws IOException {
 		int numOfAppTypes = SimSettings.getInstance().getTaskLookUpTable().length;
 
-		File successFile = null, failFile = null, vmLoadFile = null, locationFile = null;
-		FileWriter successFW = null, failFW = null, vmLoadFW = null, locationFW = null;
-		BufferedWriter successBW = null, failBW = null, vmLoadBW = null, locationBW = null;
+		File successFile = null, failFile = null, vmLoadFile = null;
+		FileWriter successFW = null, failFW = null, vmLoadFW = null;
+		BufferedWriter successBW = null, failBW = null, vmLoadBW = null;
 
 		// Save generic results to file for each app type. last index is average
 		// of all app types
@@ -225,9 +246,7 @@ public class SimLogger {
 			vmLoadFW = new FileWriter(vmLoadFile, true);
 			vmLoadBW = new BufferedWriter(vmLoadFW);
 
-			locationFile = new File(outputFolder, filePrefix + "_LOCATION.log");
-			locationFW = new FileWriter(locationFile, true);
-			locationBW = new BufferedWriter(locationFW);
+
 
 			for (int i = 0; i < numOfAppTypes + 1; i++) {
 				String fileName = "ALL_APPS_GENERIC.log";
@@ -253,7 +272,6 @@ public class SimLogger {
 			}
 
 			appendToFile(vmLoadBW, "#auto generated file!");
-			appendToFile(locationBW, "#auto generated file!");
 		}
 
 		// extract the result of each task and write it to the file if required
@@ -425,27 +443,7 @@ public class SimLogger {
 
 		if (fileLogEnabled) {
 			// write location info to file
-			for (int t = 1; t < (SimSettings.getInstance().getSimulationTime()
-					/ SimSettings.getInstance().getVmLocationLogInterval()); t++) {
-				int[] locationInfo = new int[SimSettings.getInstance().getNumOfPlaceTypes()];
-				Double time = t * SimSettings.getInstance().getVmLocationLogInterval();
 
-				if (time < SimSettings.getInstance().getWarmUpPeriod())
-					continue;
-
-				for (int i = 0; i < SimManager.getInstance().getNumOfMobileDevice(); i++) {
-
-					Location loc = SimManager.getInstance().getMobilityModel().getLocation(i);
-					int placeTypeIndex = loc.getPlaceTypeIndex();
-					locationInfo[placeTypeIndex]++;
-				}
-
-				locationBW.write(time.toString());
-				for (int i = 0; i < locationInfo.length; i++)
-					locationBW.write(SimSettings.DELIMITER + locationInfo[i]);
-
-				locationBW.newLine();
-			}
 
 			for (int i = 0; i < numOfAppTypes + 1; i++) {
 
@@ -552,7 +550,6 @@ public class SimLogger {
 				failBW.close();
 			}
 			vmLoadBW.close();
-			locationBW.close();
 			for (int i = 0; i < numOfAppTypes + 1; i++) {
 				if (i < numOfAppTypes) {
 					// if related app is not used in this simulation, just

@@ -40,6 +40,7 @@ public class SimManager extends SimEntity {
 	private static final int PRINT_PROGRESS = 3;
 	private static final int STOP_SIMULATION = 4;
 	private static final int MOVE_DEVICE = 5;
+	private static final int LOG_LOCATION = 6;
 	
 	private String simScenario;
 	private String orchestratorPolicy;
@@ -205,6 +206,11 @@ public class SimManager extends SimEntity {
 		//Creation of tasks are scheduled here!
 		for(int i=0; i< loadGeneratorModel.getTaskList().size(); i++)
 			schedule(getId(), loadGeneratorModel.getTaskList().get(i).getStartTime(), CREATE_TASK, loadGeneratorModel.getTaskList().get(i));
+
+		//Schedule logging of locations, if enabled
+		if(SimSettings.getInstance().getFileLoggingEnabled()){
+			schedule(getId(),SimSettings.getInstance().getVmLocationLogInterval(), LOG_LOCATION);
+		}
 		
 		//Periodic event loops starts from here!
 		schedule(getId(), 5, CHECK_ALL_VM);
@@ -269,6 +275,10 @@ public class SimManager extends SimEntity {
 			case MOVE_DEVICE:
 				mobilityModel.move((int) ev.getData());
 				break;
+			case LOG_LOCATION:
+				SimLogger.getInstance().logLocation();
+				schedule(getId(),SimSettings.getInstance().getVmLocationLogInterval(), LOG_LOCATION);
+			break;
 			default:
 				Log.printLine(getName() + ": unknown event type");
 				break;
