@@ -34,6 +34,7 @@ public class NomadicMobility extends MobilityModel {
 	private Location[] deviceLocations;
 	private int[] datacenterDeviceCount;
 	ExponentialDistribution[] expRngList;
+	private Location[] datacenters;
 	
 	public NomadicMobility(int _numberOfMobileDevices, double _simulationTime) {
 		super(_numberOfMobileDevices, _simulationTime);
@@ -42,6 +43,7 @@ public class NomadicMobility extends MobilityModel {
 	
 	@Override
 	public void initialize() {
+		readDatacenters();
 		deviceLocations = new Location[numberOfMobileDevices];
 		datacenterDeviceCount = new int[SimSettings.getInstance().getNumOfEdgeDatacenters()];
 		for (int i=0; i<datacenterDeviceCount.length;i++){
@@ -51,33 +53,33 @@ public class NomadicMobility extends MobilityModel {
 		expRngList = new ExponentialDistribution[SimSettings.getInstance().getNumOfEdgeDatacenters()];
 
 		//create random number generator for each place
-		Document doc = SimSettings.getInstance().getEdgeDevicesDocument();
-		NodeList datacenterList = doc.getElementsByTagName("datacenter");
+//		Document doc = SimSettings.getInstance().getEdgeDevicesDocument();
+//		NodeList datacenterList = doc.getElementsByTagName("datacenter");
 
-		for (int i = 0; i < datacenterList.getLength(); i++) {
-			Node datacenterNode = datacenterList.item(i);
-			Element datacenterElement = (Element) datacenterNode;
-			Element location = (Element)datacenterElement.getElementsByTagName("location").item(0);
-			String attractiveness = location.getElementsByTagName("attractiveness").item(0).getTextContent();
-			int placeTypeIndex = Integer.parseInt(attractiveness);
+		for (int i = 0; i < datacenters.length; i++) {
+//			Node datacenterNode = datacenterList.item(i);
+//			Element datacenterElement = (Element) datacenterNode;
+//			Element location = (Element)datacenterElement.getElementsByTagName("location").item(0);
+//			String attractiveness = location.getElementsByTagName("attractiveness").item(0).getTextContent();
+//			int placeTypeIndex = Integer.parseInt(attractiveness);
 
-			expRngList[i] = new ExponentialDistribution(SimSettings.getInstance().getMobilityLookUpTable()[placeTypeIndex]);
+			expRngList[i] = new ExponentialDistribution(SimSettings.getInstance().getMobilityLookUpTable()[datacenters[i].getPlaceTypeIndex()]);
 		}
 		
 		//initialize locations of each device and start scheduling of movement events
 		for(int i=0; i<numberOfMobileDevices; i++) {
 			int randDatacenterId = SimUtils.getRandomNumber(0, SimSettings.getInstance().getNumOfEdgeDatacenters()-1);
-			Node datacenterNode = datacenterList.item(randDatacenterId);
-			Element datacenterElement = (Element) datacenterNode;
-			Element location = (Element)datacenterElement.getElementsByTagName("location").item(0);
-			String attractiveness = location.getElementsByTagName("attractiveness").item(0).getTextContent();
-			int placeTypeIndex = Integer.parseInt(attractiveness);
-			int wlan_id = Integer.parseInt(location.getElementsByTagName("wlan_id").item(0).getTextContent());
-			int x_pos = Integer.parseInt(location.getElementsByTagName("x_pos").item(0).getTextContent());
-			int y_pos = Integer.parseInt(location.getElementsByTagName("y_pos").item(0).getTextContent());
+//			Node datacenterNode = datacenterList.item(randDatacenterId);
+//			Element datacenterElement = (Element) datacenterNode;
+//			Element location = (Element)datacenterElement.getElementsByTagName("location").item(0);
+//			String attractiveness = location.getElementsByTagName("attractiveness").item(0).getTextContent();
+//			int placeTypeIndex = Integer.parseInt(attractiveness);
+//			int wlan_id = Integer.parseInt(location.getElementsByTagName("wlan_id").item(0).getTextContent());
+//			int x_pos = Integer.parseInt(location.getElementsByTagName("x_pos").item(0).getTextContent());
+//			int y_pos = Integer.parseInt(location.getElementsByTagName("y_pos").item(0).getTextContent());
 
 			++datacenterDeviceCount[randDatacenterId];
-			deviceLocations[i] = new Location(placeTypeIndex, wlan_id, x_pos, y_pos);
+			deviceLocations[i] = datacenters[randDatacenterId];
 			//double waitingTime = expRngList[deviceLocations[i].getServingWlanId()].sample();
 			SimManager x = SimManager.getInstance();
 			x.schedule(x.getId(),SimSettings.CLIENT_ACTIVITY_START_TIME,SimManager.getMoveDevice(), i);
@@ -92,30 +94,48 @@ public class NomadicMobility extends MobilityModel {
 	public void move(int deviceId){
 		boolean placeFound = false;
 		int currentLocationId = deviceLocations[deviceId].getServingWlanId();
-		Document doc = SimSettings.getInstance().getEdgeDevicesDocument();
-		NodeList datacenterList = doc.getElementsByTagName("datacenter");
+//		Document doc = SimSettings.getInstance().getEdgeDevicesDocument();
+//		NodeList datacenterList = doc.getElementsByTagName("datacenter");
 
 		while(placeFound == false){
 			int newDatacenterId = SimUtils.getRandomNumber(0,SimSettings.getInstance().getNumOfEdgeDatacenters()-1);
 			if(newDatacenterId != currentLocationId){
 				placeFound = true;
-				Node datacenterNode = datacenterList.item(newDatacenterId);
-				Element datacenterElement = (Element) datacenterNode;
-				Element location = (Element)datacenterElement.getElementsByTagName("location").item(0);
-				String attractiveness = location.getElementsByTagName("attractiveness").item(0).getTextContent();
-				int placeTypeIndex = Integer.parseInt(attractiveness);
-				int wlan_id = Integer.parseInt(location.getElementsByTagName("wlan_id").item(0).getTextContent());
-				int x_pos = Integer.parseInt(location.getElementsByTagName("x_pos").item(0).getTextContent());
-				int y_pos = Integer.parseInt(location.getElementsByTagName("y_pos").item(0).getTextContent());
+//				Node datacenterNode = datacenterList.item(newDatacenterId);
+//				Element datacenterElement = (Element) datacenterNode;
+//				Element location = (Element)datacenterElement.getElementsByTagName("location").item(0);
+//				String attractiveness = location.getElementsByTagName("attractiveness").item(0).getTextContent();
+//				int placeTypeIndex = Integer.parseInt(attractiveness);
+//				int wlan_id = Integer.parseInt(location.getElementsByTagName("wlan_id").item(0).getTextContent());
+//				int x_pos = Integer.parseInt(location.getElementsByTagName("x_pos").item(0).getTextContent());
+//				int y_pos = Integer.parseInt(location.getElementsByTagName("y_pos").item(0).getTextContent());
 
 
 				--datacenterDeviceCount[currentLocationId];
 				++datacenterDeviceCount[newDatacenterId];
-				deviceLocations[deviceId] = new Location(placeTypeIndex, wlan_id, x_pos, y_pos);
+				deviceLocations[deviceId] = datacenters[newDatacenterId];
 				double waitingTime = expRngList[newDatacenterId].sample();
 				SimManager x = SimManager.getInstance();
 				x.schedule(x.getId(),waitingTime,SimManager.getMoveDevice(), deviceId);
 			}
+		}
+	}
+
+	public void readDatacenters(){
+		Document doc = SimSettings.getInstance().getEdgeDevicesDocument();
+		NodeList datacenterList = doc.getElementsByTagName("datacenter");
+		int count = SimSettings.getInstance().getNumOfEdgeDatacenters();
+		datacenters = new Location[count];
+		for (int i = 0; i < count; i++){
+			Node datacenterNode = datacenterList.item(i);
+			Element datacenterElement = (Element) datacenterNode;
+			Element location = (Element)datacenterElement.getElementsByTagName("location").item(0);
+			String attractiveness = location.getElementsByTagName("attractiveness").item(0).getTextContent();
+			int placeTypeIndex = Integer.parseInt(attractiveness);
+			int wlan_id = Integer.parseInt(location.getElementsByTagName("wlan_id").item(0).getTextContent());
+			int x_pos = Integer.parseInt(location.getElementsByTagName("x_pos").item(0).getTextContent());
+			int y_pos = Integer.parseInt(location.getElementsByTagName("y_pos").item(0).getTextContent());
+			datacenters[i] = new Location(placeTypeIndex, wlan_id, x_pos, y_pos);
 		}
 	}
 
